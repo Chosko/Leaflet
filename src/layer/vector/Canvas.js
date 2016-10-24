@@ -3,6 +3,7 @@ import * as DomUtil from '../../dom/DomUtil';
 import * as DomEvent from '../../dom/DomEvent';
 import * as Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
+import {Bounds} from '../../geometry/Bounds';
 
 /*
  * @class Canvas
@@ -51,7 +52,7 @@ export var Canvas = Renderer.extend({
 	_initContainer: function () {
 		var container = this._container = document.createElement('canvas');
 
-		DomEvent.on(container, 'mousemove', L.Util.throttle(this._onMouseMove, 32, this), this);
+		DomEvent.on(container, 'mousemove', Util.throttle(this._onMouseMove, 32, this), this);
 		DomEvent.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this);
 		DomEvent.on(container, 'mouseout', this._handleMouseOut, this);
 
@@ -133,7 +134,7 @@ export var Canvas = Renderer.extend({
 		if (!this._map) { return; }
 
 		var padding = (layer.options.weight || 0) + 1;
-		this._redrawBounds = this._redrawBounds || new L.Bounds();
+		this._redrawBounds = this._redrawBounds || new Bounds();
 		this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
 		this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
 
@@ -326,5 +327,5 @@ export var Canvas = Renderer.extend({
 // @factory L.canvas(options?: Renderer options)
 // Creates a Canvas renderer with the given options.
 export function canvas(options) {
-	return Browser.canvas ? new L.Canvas(options) : null;
+	return Browser.canvas ? new Canvas(options) : null;
 }
